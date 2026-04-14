@@ -92,6 +92,10 @@ data/raw/      GTSRB pickled dataset (gitignored)
 
 <table>
 <tr>
+<td align="center"><strong>Alex</strong></td>
+<td align="center"><strong>Kartik</strong></td>
+<td align="center"><strong>Vaishnav</strong></td>
+<td align="center"><strong>Adrian</strong></td>
 <td align="center"><strong>Jordan</strong></td>
 </tr>
 </table>
