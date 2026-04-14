@@ -1,0 +1,25 @@
+
+# Project specific
+results/
+data/raw/
+data/processed/
+data/poisoned/
+__pycache__/
+*.pyc
+.ipynb_checkpoints/
+
+# Ignore pickle files (GTSRB dataset, too large for git)
+*.p
+!assets/demo/*.p
+
+# Checkpoint files — ignore most but keep the three demo weights
+checkpoints/*
+!checkpoints/clean_lenet.pth
+!checkpoints/badnets_lenet.pth
+!checkpoints/blended_lenet.pth
+
+# Keep architecture docs
+!docs/architecture/
+
+# Virtual environment
+.venv/

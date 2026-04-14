@@ -1,0 +1,25 @@
+model:
+  architecture: lenet
+  in_channels: 3
+  num_classes: 43
+
+data:
+  train_pickle: data/raw/train.p
+  test_pickle: data/raw/test.p
+  val_split: 0.2
+  batch_size: 64
+  num_workers: 4
+  use_hist_eq: true
+  use_grayscale: false
+
+training:
+  epochs: 30
+  optimizer: adam
+  lr: 0.001
+  weight_decay: 0.0001
+  scheduler: cosine
+
+seed: 42
+device: cuda
+checkpoint_dir: checkpoints
+results_dir: results
