@@ -306,6 +306,19 @@ def load_results():
         with open(csvpath) as f:
             reader = csv.DictReader(f)
             for row in reader:
+                if row.get("stage") is None and row.get("attack") and row.get("test_ca") and row.get("asr"):
+                    normalized = {
+                        "stage": "poisoned",
+                        "attack": row["attack"],
+                        "defense": "none",
+                        "test_ca": row["test_ca"],
+                        "asr": row["asr"],
+                    }
+                    key = ("poisoned", row["attack"], "none")
+                    if key not in seen:
+                        seen.add(key)
+                        rows.append(normalized)
+                    continue
                 key = (row.get("stage"), row.get("attack"), row.get("defense"))
                 if key not in seen:
                     seen.add(key)
@@ -318,6 +331,8 @@ def make_attack_overview_chart():
     attack_rows = {r["attack"]: r for r in rows if r.get("stage") in ("clean", "poisoned")}
     attacks_ordered = ["none", "badnets", "blended", "label_consistent"]
     labels = [ATTACK_DISPLAY.get(a, a) for a in attacks_ordered if a in attack_rows]
+    if not labels:
+        return None
     ca_vals = [float(attack_rows[a]["test_ca"]) * 100 for a in attacks_ordered if a in attack_rows]
     asr_vals = [float(attack_rows[a]["asr"]) * 100 for a in attacks_ordered if a in attack_rows]
     x = np.arange(len(labels))
@@ -482,7 +497,7 @@ def build_ui():
 
     icon = ICON_PATH if os.path.exists(ICON_PATH) else None
 
-    with gr.Blocks(title="HTOTRBAITSR Backdoor Demo", theme=gr.themes.Default()) as demo:
+    with gr.Blocks(title="HTOTRBAITSR Backdoor Demo") as demo:
         gr.Markdown(
             "# Hidden Triggers on the Road: Backdoor Attack Demo\n"
             "PyTorch backdoor attack research on GTSRB (43 class traffic sign recognition). "
@@ -596,26 +611,17 @@ def build_ui():
                     "is hurting the model."
                 )
                 chart_ca = gr.Plot(label="CA after defence")
-                study_images = [p for p in [
-                    "results/clean_learning_curve.png",
-                    "docs/experiments/clean_baseline/class_distribution.png",
-                    "docs/experiments/clean_baseline/trigger_preview.png",
-                    "docs/experiments/clean_baseline/class_imbalance.png",
-                    "docs/experiments/clean_baseline/preprocessing_comparison.png",
-                ] if os.path.exists(p)]
-                if study_images:
-                    gr.Markdown("#### Study Figures")
-                    gr.Gallery(value=study_images, label="Generated study figures", columns=2, height=400)
                 load_results_btn.click(
                     fn=load_results_tab,
                     inputs=[],
                     outputs=[chart_overview, chart_asr, chart_ca, chart_reduction],
                 )
 
+    demo.queue()
     return demo
 
 
 if __name__ == "__main__":
     icon = ICON_PATH if os.path.exists(ICON_PATH) else None
     ui = build_ui()
-    ui.launch(share=False, inbrowser=True, favicon_path=icon)
+    ui.launch(share=False, inbrowser=True, favicon_path=icon, theme=gr.themes.Default())
