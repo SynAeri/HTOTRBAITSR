@@ -51,14 +51,20 @@ PyTorch implementation of backdoor attacks and defences on the German Traffic Si
 
 ---
 
-## Quick Start (Demo)
+## Quick Start
 
 ```bash
 git clone <repo-url>
 cd HTOTRBAITSR
 pip install -r demo_requirements.txt
-python demo.py
 ```
+
+| Script | What it does |
+|---|---|
+| `python demo.py` | Full three-tab Gradio demo: attack preview, live defence, and experiment results |
+| `python experiment_results.py` | Standalone results viewer: all charts and the full results table, no button required |
+| `python apply_defence.py` | Standalone defence app: apply any defence to a poisoned model and compare predictions |
+
 ---
 
 ## Key Results
