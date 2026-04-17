@@ -1,6 +1,5 @@
 
 # Project specific
-results/
 data/raw/
 data/processed/
 data/poisoned/

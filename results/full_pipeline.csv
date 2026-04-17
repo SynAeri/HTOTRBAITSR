@@ -1,0 +1,4 @@
+stage,attack,defense,test_ca,asr
+clean,none,none,0.9685669041963578,0.0
+poisoned,badnets,none,0.9583531274742676,0.8309870550161812
+poisoned,blended,none,0.9506730007917656,0.9974919093851132

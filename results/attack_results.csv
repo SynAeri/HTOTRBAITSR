@@ -1,0 +1,4 @@
+attack,trigger_size,trigger_position,trigger_color,poison_rate,test_ca,asr
+badnets,3,bottom_right,"[255, 255, 255]",0.1,0.956769596199525,0.8303398058252427
+blended,0.15,32,True,,0.1,0.9487727632620744,0.9970873786407767
+label_consistent,14,0.031373,10,badnets,0.1,0.9687252573238322,0.0013754045307443365
