@@ -1,0 +1,17 @@
+axis,param,value,attack,test_ca,asr,notes
+poison_rate,poison_rate,0.01,badnets,0.9661,0.1823,low poison barely embeds backdoor
+poison_rate,poison_rate,0.05,badnets,0.9638,0.5914,moderate poison rate
+poison_rate,poison_rate,0.10,badnets,0.9584,0.8309,main experiment anchor point
+poison_rate,poison_rate,0.20,badnets,0.9512,0.9247,high poison slight CA degradation
+trigger_size,trigger_size_px,2,badnets,0.9598,0.4871,small patch weak signal
+trigger_size,trigger_size_px,3,badnets,0.9584,0.8309,main experiment anchor point
+trigger_size,trigger_size_px,5,badnets,0.9571,0.9134,larger patch stronger signal
+trigger_size,trigger_size_px,7,badnets,0.9543,0.9588,near ceiling slight CA cost
+target_class,target_class,0,badnets,0.9591,0.7812,class 0 low frequency 20km/h
+target_class,target_class,14,badnets,0.9584,0.8309,class 14 stop sign anchor
+target_class,target_class,33,badnets,0.9577,0.8541,class 33 turn right medium freq
+alpha,alpha,0.05,blended,0.9624,0.4317,nearly invisible low ASR
+alpha,alpha,0.10,blended,0.9591,0.8762,strong attack good stealthiness
+alpha,alpha,0.15,blended,0.9507,0.9971,main experiment anchor point
+alpha,alpha,0.20,blended,0.9481,0.9994,visible trigger marginal ASR gain
+alpha,alpha,0.30,blended,0.9419,0.9998,highly visible trigger CA cost
