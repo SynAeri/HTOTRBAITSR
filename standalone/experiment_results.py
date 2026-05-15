@@ -109,6 +109,7 @@ def make_attack_overview_chart(rows):
     ax1.legend(handles=[bars1, bars2], loc="upper left", fontsize=8)
     ax1.grid(axis="y", alpha=0.2)
     plt.tight_layout()
+    plt.close(fig)
     return fig
 
 
@@ -147,6 +148,7 @@ def make_asr_defense_chart(rows):
         ax.tick_params(axis="x", rotation=15)
     plt.suptitle("Defence Effectiveness: ASR Reduction per Attack", fontsize=13, fontweight="bold")
     plt.tight_layout()
+    plt.close(fig)
     return fig
 
 
@@ -185,6 +187,7 @@ def make_ca_defense_chart(rows):
         ax.tick_params(axis="x", rotation=15)
     plt.suptitle("Defence Cost: Clean Accuracy After Applying Each Defence", fontsize=13, fontweight="bold")
     plt.tight_layout()
+    plt.close(fig)
     return fig
 
 
@@ -221,6 +224,7 @@ def make_asr_reduction_chart(rows):
     ax.legend(fontsize=9)
     ax.grid(axis="y", alpha=0.3)
     plt.tight_layout()
+    plt.close(fig)
     return fig
 
 
@@ -312,4 +316,5 @@ if __name__ == "__main__":
                     for p in study_images:
                         gr.Image(value=p, label=os.path.basename(p))
 
-    app.launch(inbrowser=True)
+    app.queue()
+    app.launch(inbrowser=not os.environ.get("GRADIO_NO_BROWSER"))

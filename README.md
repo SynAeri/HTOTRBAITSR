@@ -61,9 +61,18 @@ pip install -r demo_requirements.txt
 
 | Script | What it does |
 |---|---|
-| `python demo.py` | Full three-tab Gradio demo: attack preview, live defence, and experiment results |
-| `python experiment_results.py` | Standalone results viewer: all charts and the full results table, no button required |
-| `python apply_defence.py` | Standalone defence app: apply any defence to a poisoned model and compare predictions |
+| `python AIO.py` | Launches all three standalone apps as subprocesses and opens each in a browser tab |
+| `python standalone/demo.py` | Attack demo: upload a traffic sign, apply BadNets or Blended, compare clean vs poisoned model predictions. Generates a public Gradio share link on launch |
+| `python standalone/experiment_results.py` | Results viewer: all charts and the full results table |
+| `python standalone/apply_defence.py` | Defence app: apply any defence to a poisoned model and compare predictions on a triggered image |
+
+**Public demo**
+
+`standalone/demo.py` uses Gradio's built-in share link. A public URL is printed to the terminal on launch:
+
+```bash
+python standalone/demo.py
+```
 
 ---
 

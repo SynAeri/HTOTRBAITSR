@@ -1,7 +1,9 @@
 # standalone gradio app for applying defences to poisoned models and comparing predictions
 import sys
 import os
-sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+import matplotlib
+matplotlib.use("Agg")
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 import copy
 import pickle
@@ -149,7 +151,10 @@ def run_defence(attack_choice, defence_choice, uploaded_image, progress=gr.Progr
         def_cls, def_kwargs = DEFENSE_MAP[defence_choice]
         defence = def_cls(**def_kwargs)
         progress(0.2, desc="Running defence (this may take 30 to 60 seconds)...")
-        defended = defence.apply(copy.deepcopy(poisoned_model), clean_loader)
+        try:
+            defended = defence.apply(copy.deepcopy(poisoned_model), clean_loader)
+        except Exception as e:
+            return None, None, None, f"Defence failed during apply: {e}"
         defended.eval()
         DEFENDED_MODELS[cache_key] = defended
         progress(0.9, desc="Defence applied, evaluating...")
@@ -157,13 +162,15 @@ def run_defence(attack_choice, defence_choice, uploaded_image, progress=gr.Progr
         progress(0.9, desc="Using cached defended model...")
         defended = DEFENDED_MODELS[cache_key]
 
-    img_np = np.array(uploaded_image.convert("RGB"))
-    triggered_np = attack.inject_trigger(img_np.copy())
-    triggered_tensor = preprocess(triggered_np)
-    triggered_pil = Image.fromarray(triggered_np)
-
-    poisoned_preds = predict(poisoned_model, triggered_tensor)
-    defended_preds = predict(defended, triggered_tensor)
+    try:
+        img_np = np.array(uploaded_image.convert("RGB"))
+        triggered_np = attack.inject_trigger(img_np.copy())
+        triggered_tensor = preprocess(triggered_np)
+        triggered_pil = Image.fromarray(triggered_np)
+        poisoned_preds = predict(poisoned_model, triggered_tensor)
+        defended_preds = predict(defended, triggered_tensor)
+    except Exception as e:
+        return None, None, None, f"Prediction failed: {e}"
 
     top_before = list(poisoned_preds.keys())[0]
     top_after = list(defended_preds.keys())[0]
@@ -258,4 +265,4 @@ if __name__ == "__main__":
         )
 
     app.queue()
-    app.launch(inbrowser=True)
+    app.launch(inbrowser=not os.environ.get("GRADIO_NO_BROWSER"))
